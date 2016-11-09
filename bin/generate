@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const path = require('path');
+const emoji = require('unicode-tr51-emoji/symbols');
+const merge = require('merge-deep');
+
+let output = {};
+
+for (let i in emoji) {
+    const codepoints = [...emoji[i]];
+    const path = build(Array.isArray(codepoints) ? codepoints : [codepoints]);
+
+    output = merge({}, output, path);
+}
+
+function build(path) {
+    return path.reverse().reduce((state, part) => ({ [part]: state }), { end: true });
+}
+
+function optimize(tree) {
+    return Object.entries(tree).reduce((state, [key, value]) => {
+        return Object.assign({}, state, { [key]: isEnd(key, value) ? 1 : optimize(value) });
+    }, {});
+}
+
+function isEnd(key, value) {
+    return key === 'end' || Object.keys(value).length === 1 && value.end !== undefined;
+}
+
+fs.writeFileSync(path.join(__dirname, '..', 'src', 'trie.js'), `module.exports = ${JSON.stringify(optimize(output), null, 2)};`);

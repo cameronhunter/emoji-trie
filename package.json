@@ -1,0 +1,20 @@
+{
+  "name": "emoji-trie",
+  "version": "0.0.0",
+  "description": "Trie datastructure for matching emoji",
+  "main": "src/trie.js",
+  "scripts": {
+    "build": "bin/generate",
+    "test": "ava"
+  },
+  "files": [
+    "src"
+  ],
+  "author": "Cameron Hunter <hello@cameronhunter.co.uk>",
+  "license": "MIT",
+  "devDependencies": {
+    "ava": "^0.16.0",
+    "merge-deep": "^3.0.0",
+    "unicode-tr51-emoji": "^2.0.1"
+  }
+}
